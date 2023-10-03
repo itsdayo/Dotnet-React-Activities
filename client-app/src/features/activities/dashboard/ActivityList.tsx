@@ -1,33 +1,23 @@
 import React, { SyntheticEvent, useState } from "react";
-import { Activity } from "../../../app/models/activity";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  activities: Activity[];
-  selectActivity: (id: string) => void;
-  handleDeleteActivity: (id: string) => void;
-  submitting: boolean;
-}
-
-export default function ActivityList({
-  activities,
-  selectActivity,
-  handleDeleteActivity,
-  submitting,
-}: Props) {
+export default observer(function ActivityList() {
   const [target, setTarget] = useState("");
-
+  const { activityStore } = useStore();
+  const { deleteActivity, activititesByDate, loading } = activityStore;
   const handleActivityDelete = (
     e: SyntheticEvent<HTMLButtonElement>,
     id: string
   ) => {
     setTarget(e.currentTarget.name);
-    handleDeleteActivity(id);
+    deleteActivity(id);
   };
   return (
     <Segment>
       <Item.Group divided>
-        {activities.map((activity) => (
+        {activititesByDate.map((activity) => (
           <Item key={activity.id}>
             <Item.Content>
               <Item.Header as="a">{activity.title}</Item.Header>
@@ -40,7 +30,7 @@ export default function ActivityList({
               </Item.Description>
               <Item.Extra>
                 <Button
-                  onClick={() => selectActivity(activity.id)}
+                  onClick={() => activityStore.selectActivity(activity.id)}
                   floated="right"
                   content="View"
                   color="blue"
@@ -50,7 +40,7 @@ export default function ActivityList({
                   floated="right"
                   content="Delete"
                   color="red"
-                  loading={submitting && target === activity.id}
+                  loading={loading && target === activity.id}
                   name={activity.id}
                 />
                 <Label basic content={activity.category} />
@@ -61,4 +51,4 @@ export default function ActivityList({
       </Item.Group>
     </Segment>
   );
-}
+});

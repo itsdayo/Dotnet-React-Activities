@@ -1,20 +1,24 @@
-import React, { ChangeEvent, useState } from "react";
-import { Button, Form, Segment } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
+import React, { ChangeEvent, SyntheticEvent, useState } from "react";
+import {
+  Button,
+  Dropdown,
+  DropdownProps,
+  Form,
+  Segment,
+  Select,
+} from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  activity: Activity | undefined;
-  closeForm: () => void;
-  handleSubmitActivity: (activity: Activity) => void;
-  submitting: boolean;
-}
-
-export default function ActivityForn({
-  activity: selectedActivity,
-  closeForm,
-  handleSubmitActivity,
-  submitting,
-}: Props) {
+export default observer(function ActivityForn() {
+  const { activityStore } = useStore();
+  const {
+    selectedActivity,
+    closeForm,
+    createActivity,
+    updateActivity,
+    loading,
+  } = activityStore;
   const inintialState = selectedActivity ?? {
     id: "",
     title: "",
@@ -27,8 +31,16 @@ export default function ActivityForn({
 
   const [activity, setActivity] = useState(inintialState);
 
+  const categoryOptions = [
+    { text: "Culture", value: "culture" },
+    { text: "Drinks", value: "drinks" },
+    { text: "Film", value: "film" },
+    { text: "Food", value: "food" },
+    { text: "Music", value: "music" },
+    { text: "Travel", value: "travel" },
+  ];
   const handleSubmit = () => {
-    handleSubmitActivity(activity);
+    activity.id ? updateActivity(activity) : createActivity(activity);
   };
 
   const handleInputChange = (
@@ -36,6 +48,13 @@ export default function ActivityForn({
   ) => {
     const { name, value } = event.target;
     setActivity({ ...activity, [name]: value });
+  };
+
+  const handleSelectionChange = (
+    event: SyntheticEvent<HTMLElement>,
+    data: DropdownProps
+  ) => {
+    setActivity({ ...activity, [data.name]: data.value });
   };
   return (
     <Segment clearing>
@@ -52,11 +71,15 @@ export default function ActivityForn({
           name="description"
           onChange={handleInputChange}
         />
-        <Form.Input
+        <Form.Dropdown
+          control={Select}
+          options={categoryOptions}
           placeholder="Category"
+          onChange={handleSelectionChange}
           value={activity.category}
           name="category"
-          onChange={handleInputChange}
+          fluid
+          selection
         />
         <Form.Input
           placeholder="Date"
@@ -78,7 +101,7 @@ export default function ActivityForn({
           onChange={handleInputChange}
         />
         <Button
-          loading={submitting}
+          loading={loading}
           floated="right"
           positive
           type="submit"
@@ -93,4 +116,4 @@ export default function ActivityForn({
       </Form>
     </Segment>
   );
-}
+});
