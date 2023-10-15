@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
+import { Photo, Profile } from "../models/profile";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -78,7 +79,8 @@ const requests = {
 const Activities = {
   list: () => requests.get<Activity[]>("/activities"),
   details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-  create: (activity: ActivityFormValues) => requests.post<void>("/activities", activity),
+  create: (activity: ActivityFormValues) =>
+    requests.post<void>("/activities", activity),
   update: (activity: ActivityFormValues) =>
     requests.put<void>(`activities/${activity.id}`, activity),
   delete: (id: string) => requests.del<void>(`/activities/${id}`),
@@ -91,10 +93,26 @@ const Account = {
   register: (user: UserFormValues) =>
     requests.post<User>("/account/register", user),
 };
+const Profiles = {
+  get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+  uploadPhoto: (file: Blob) => {
+    const formData = new FormData();
+
+    formData.append("File", file);
+    return axios.post<Photo>("photos", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+  setMainPhoto: (id: string) => requests.post(`/photos/${id}/SetMain`, {}),
+  deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+  updateProfile: (profile: Partial<Profile>) =>
+    requests.put(`/profiles`, profile),
+};
 
 const agent = {
   Activities,
   Account,
+  Profiles,
 };
 
 export default agent;
