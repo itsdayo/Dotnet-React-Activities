@@ -38,16 +38,22 @@ namespace Application
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x=> x.UserName == _userAccessor.GetUsername());
-               _context.Activities.Add(request.Activity);
 
                var attendee = new ActivityAttendee
                {
+                AppUserId = user.Id,
                 AppUser = user,
                 Activity =request.Activity,
                 IsHost = true
                } ;
 
-               request.Activity.Attendees.Add(attendee);
+               
+                request.Activity.Attendees.Remove(request.Activity.Attendees.First());
+                request.Activity.Attendees.Add(attendee);
+                
+
+                _context.Activities.Add(request.Activity);
+
 
                var results =  await _context.SaveChangesAsync()>0;
 
