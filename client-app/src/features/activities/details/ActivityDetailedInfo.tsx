@@ -29,7 +29,7 @@ export default observer(function ActivityDetailedInfo({ activity }: Props) {
             <span>
               {DateTime.fromISO(
                 new Date(activity.date!).toISOString() as string
-              ).toFormat(`L'/'dd'/'yyyy   h':'mma `)}
+              ).toLocaleString(DateTime.DATE_HUGE)}
             </span>
           </Grid.Column>
         </Grid>

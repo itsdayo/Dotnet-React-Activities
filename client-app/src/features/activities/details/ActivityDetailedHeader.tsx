@@ -57,7 +57,7 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                   <p>
                     {DateTime.fromISO(
                       new Date(activity.date).toISOString()
-                    ).toFormat(`L'/'dd'/'yyyy   h':'mma `)}
+                    ).toLocaleString(DateTime.DATE_HUGE)}
                   </p>
                 )}
                 <p>
