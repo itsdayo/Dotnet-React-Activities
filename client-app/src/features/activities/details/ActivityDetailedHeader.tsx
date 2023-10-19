@@ -27,6 +27,7 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
   const {
     activityStore: { updateAttendence, loading, cancelActivityToggle },
   } = useStore();
+
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: "0" }}>
@@ -54,10 +55,7 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                 />
                 {activity.date && (
                   <p>
-                    {format(
-                      parseISO(activity.date!.toString()),
-                      "dd MMM yyyy"
-                    )}
+                    {format(parseISO(activity.date!.toString()), "dd MMM yyyy")}
                   </p>
                 )}
                 <p>

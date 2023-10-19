@@ -25,6 +25,7 @@ export default observer(function ActivityDetails() {
   }, [id, loadActivity, clearSelectedActivity]);
 
   if (loadingInitial || !activity) return;
+
   return (
     <Grid>
       <Grid.Column width={10}>

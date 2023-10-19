@@ -8,7 +8,6 @@ export default observer(function ProfileFollowings() {
 
   const { profile, followings, loadingFollowing, activeTab } = profileStore;
 
-  console.log(profile);
   return (
     <Tab.Pane loading={loadingFollowing}>
       <Grid>
