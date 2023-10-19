@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import { Button, Header, Item, Segment, Image, Label } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 import { Link } from "react-router-dom";
-import format from "date-fns/format";
 import { useStore } from "../../../app/stores/store";
 import { parseISO } from "date-fns";
+import { DateTime } from "luxon";
 
 const activityImageStyle = {
   filter: "brightness(30%)",
@@ -55,7 +55,9 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                 />
                 {activity.date && (
                   <p>
-                    {format(parseISO(activity.date!.toString()), "dd MMM yyyy")}
+                    {DateTime.fromISO(
+                      new Date(activity.date).toISOString()
+                    ).toFormat(`L'/'dd'/'yyyy   h':'mma `)}
                   </p>
                 )}
                 <p>

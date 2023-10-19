@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Segment, Grid, Icon } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
-import { format, parseISO } from "date-fns";
+import { DateTime } from "luxon";
 
 interface Props {
   activity: Activity;
@@ -27,10 +27,9 @@ export default observer(function ActivityDetailedInfo({ activity }: Props) {
           </Grid.Column>
           <Grid.Column width={15}>
             <span>
-              {format(
-                parseISO(activity.date!.toString()),
-                "dd MMM yyyy h:mm aa"
-              )}
+              {DateTime.fromISO(
+                new Date(activity.date!).toISOString() as string
+              ).toFormat(`L'/'dd'/'yyyy   h':'mma `)}
             </span>
           </Grid.Column>
         </Grid>
