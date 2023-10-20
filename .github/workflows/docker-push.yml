@@ -1,6 +1,6 @@
 name: docker-push
 
-on:
+on: push
 workflow_dispatch:
 
   # push:
