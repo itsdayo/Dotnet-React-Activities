@@ -45,7 +45,7 @@ namespace Application.Profiles
                 
                  if(request.Predicate =="past")
                  {
-                    query = query.Where(x=>x.Date <= DateTime.Now);
+                    query = query.Where(x=>x.Date <= DateTime.UtcNow);
                  }
                 
                else if(request.Predicate =="hosting")
@@ -53,7 +53,7 @@ namespace Application.Profiles
                     query = query.Where(a=>a.HostUsername ==_userAccessor.GetUsername());
                 }
                 else {
-                    query = query.Where(x=>x.Date>= DateTime.Now);
+                    query = query.Where(x=>x.Date>= DateTime.UtcNow);
                 }
 
                 var activities = await query.ToListAsync();

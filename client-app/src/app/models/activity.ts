@@ -1,7 +1,7 @@
 import { Profile } from "./profile";
 
 export interface IActivity {
-  id: string;
+  id: string | undefined;
   title: string;
   description: string | null;
   category: string;
@@ -17,22 +17,24 @@ export interface IActivity {
 }
 
 export class Activity implements IActivity {
-  constructor(init?: ActivityFormValues) {
-    this.id = init?.id!;
+  constructor(init?: ActivityFormValues) {if(init){
+    this.id = init.id!;
     this.title = init.title;
-    this.date = init?.date!;
+    this.date = init.date!;
     this.description = init?.description;
     this.category = init?.category;
     this.venue = init?.venue;
     this.city = init.city;
   }
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  date: Date | null;
-  city: string;
-  venue: string;
+  
+  }
+  id: string = "";
+  title: string= "";
+  description: string = "";
+  category: string= "";
+  date: Date | null =null;
+  city: string= "";
+  venue: string= "";
   hostUsername: string = "";
   isCancelled: boolean = false;
   attendees: Profile[]= [];
