@@ -1,12 +1,9 @@
 name: docker-push
 
-on: push
-workflow_dispatch:
-
-  # push:
-  #   branches:
-  #     - 'main'
-
+on:
+  push:
+    branches:
+      - 'main'
 jobs:
   docker:
     runs-on: ubuntu-latest
