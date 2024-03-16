@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import ValidationError from "../errors/ValidationErrors";
 
 export default observer(function RegisterForm() {
-  const { userStore } = useStore();
+  const { userStore, modalStore } = useStore();
   return (
     <Formik
       initialValues={{
@@ -18,7 +18,10 @@ export default observer(function RegisterForm() {
         error: null,
       }}
       onSubmit={(values, { setErrors }) =>
-        userStore.register(values).catch((error) => setErrors({ error }))
+        userStore.register(values).catch((error) => {
+          modalStore.closeModal();
+          setErrors({ error });
+        })
       }
       validationSchema={Yup.object({
         displayName: Yup.string().required(),

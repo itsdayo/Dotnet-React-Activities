@@ -82,10 +82,12 @@ namespace API.Controllers
 
         private UserDto CreateUserObject(AppUser user)
         {
+
+            var photo = user.Photos!=null? user.Photos.FirstOrDefault(x=>x.IsMain)?.Url: "";
             return new UserDto
             {
                 DisplayName = user.DisplayName,
-                Image = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url,
+                Image = photo,
                 Token = _tokenSerivce.CreateToken(user),
                 Username = user.UserName
 
