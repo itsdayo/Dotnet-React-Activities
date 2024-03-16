@@ -5,6 +5,7 @@ interface Props {
 }
 
 export default function ValidationError({ errors }: Props) {
+  console.log(errors, "beta");
   return (
     <Message error>
       {Array.isArray(errors) && (
