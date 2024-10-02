@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Photos;
 using Infrastructure.Security;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -55,30 +56,21 @@ namespace API.Extensions
     // or from the environment variable from FlyIO, use it to set up your DbContext.
     options.UseNpgsql(connStr);
 });
-
-
-
-                services.Configure<CookiePolicyOptions>(options =>
-        {
-            // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-            options.CheckConsentNeeded = context => true;
-            options.MinimumSameSitePolicy = SameSiteMode.None;
-        });
-
-
-
-            // handle cors issue
-            services.AddCors(opt=>{
+services.AddCors(opt =>
+{
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3001");
+                    policy
+.AllowAnyMethod()
+.AllowAnyHeader()
+.AllowCredentials()
+.WithOrigins("http://localhost:3001");
                 });
             });
-
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(List.Handler).Assembly));
             services.AddAutoMapper(typeof(MappingProfiles).Assembly); 
             services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssemblyContaining<Create>();
+             services.AddValidatorsFromAssemblyContaining<Create>();
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
