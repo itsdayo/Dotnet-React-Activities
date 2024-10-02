@@ -38,7 +38,15 @@ namespace API.Extensions
         var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
         // Parse connection URL to connection string for Npgsql
-        connUrl = connUrl.Replace("postgres://", string.Empty);
+        if (!string.IsNullOrEmpty(connUrl))
+        {
+            connUrl = connUrl.Replace("postgres://", string.Empty);
+        }
+        else
+        {
+            // Handle the null or empty case appropriately here
+            throw new ArgumentNullException(nameof(connUrl), "Connection URL cannot be null or empty.");
+        }
         var pgUserPass = connUrl.Split("@")[0];
         var pgHostPortDb = connUrl.Split("@")[1];
         var pgHostPort = pgHostPortDb.Split("/")[0];

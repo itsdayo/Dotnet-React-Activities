@@ -6,6 +6,16 @@ You will need to estabish a docker connection for postgres database
 
 Go inside /API and run dotnet run to start the server
 
+## Not Madatory to start application but if want to run server with Docker
+To run Docker Image
+
+docker build -t dayosql/reactivities .
+
+docker run --rm -it -p 8080:80 dayosql/reactivities
+
+To push to docker 
+
+docker push dayosql/reactivities:latest
 
 To drop database
 
