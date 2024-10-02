@@ -1,23 +1,28 @@
-Go inside the client-app and run npm start to start the client
+# Reactivities Planner
 
-You will need to estabish a docker connection for postgres database 
+This guide walks you through setting up and running the Reactivities Planner application, both locally and with Docker.
 
- docker run --name dev -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:latest
+## Getting Started
 
-Go inside /API and run dotnet run to start the server
+### 1. Start the Client Application
 
-## Not Madatory to start application but if want to run server with Docker
-To run Docker Image
+To start the client application:
 
+```bash
+cd client-app
+npm start
+```
+
+### 2. Start the Server
+```bash
+cd API
+dotnet run
+```
+
+### Optional: Running the Application with Docker
+
+```bash
 docker build -t dayosql/reactivities .
 
 docker run --rm -it -p 8080:80 dayosql/reactivities
-
-To push to docker 
-
-docker push dayosql/reactivities:latest
-
-To drop database
-
-dotnet ef database drop -p Persistence -s API
-
+```
